@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block header %}
+    <title>admin products</title>
+{% endblock %}
+
+{% block body %}
+
+    {% if products %}
+        <table style="border: 1px solid black; margin-bottom: 10px">
+            <thead>
+            <th class="th-admin">عکس</th>
+            <th class="th-admin">نام</th>
+            <th class="th-admin">توضیحات</th>
+            <th class="th-admin">قیمت</th>
+            <th class="th-admin">موجودی</th>
+            <th class="th-admin">فعال</th>
+            <th class="th-admin">ویرایش</th>
+            <th class="th-admin">حذف</th>
+            </thead>
+
+            <tbody>
+            {% for product in products %}
+                <tr>
+                    <td class="td-admin"><a href="/static/uploads/{{ product.id }}.jpg"><img
+                            src="/static/uploads/{{ product.id }}.jpg" alt="..." style="width: 50px">
+                    </a>
+                    </td>
+                    <td class="td-admin">{{ product.name }}</td>
+                    <td class="td-admin">{{ product.description }}</td>
+                    <td class="td-admin">{{ product.price }}</td>
+                    <td class="td-admin">{{ product.stock }}</td>
+                    <td class="td-admin">{% if product.active == 1 %} yes {% else %} no {% endif %}</td>
+                    <td class="td-admin"><a href="{{ url_for('admin.edit_product', id=product.id) }}">ویرایش</a></td>
+                    <td class="td-admin"><a href="{{ url_for('admin.remove_product', id=product.id) }}">حذف</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="text-center text text-primary">محصولی پیدا نشد</div>
+    {% endif %}
+
+    <div class="text-center">
+        <h3>افزودن محصول</h3>
+    </div>
+
+    <form action="#" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <label>background: </label><input type="file" name="file"><br>
+        <input type="text" name="name" placeholder="نام محصول"><br>
+        <textarea name="description" placeholder="توضیحات"></textarea><br>
+        <input type="number" name="price" placeholder="قیمت"><br>
+        <input type="number" name="stock" placeholder="موجودی"><br>
+        <input type="checkbox" name="active" value="فعال">فعال <br>
+        <input type="submit" value="ساختن">
+    </form>
+
+{% endblock %}

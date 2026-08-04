@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block header %}
+    <title>detail product</title>
+{% endblock %}
+
+{% block body %}
+    <div>
+        <div>
+            <img src="/static/uploads/{{ p.id }}.jpg" alt="..." width="150px">
+        </div>
+        <span>نام: {{ p.name }}</span><br>
+        <span>قیمت: {{ p.price }}</span><br>
+        <span>موجودی: {{ p.stock }}</span><br><br>
+        <span class="center">توضیحات: </span><br>
+
+        <strong><span>{{ p.description }}</span></strong>
+
+        <form action="/add-to-cart" method="get">
+            <input type="hidden" name="id" value="{{ p.id }}">
+            <input type="number" name="quantity" placeholder="تعدادی که می خواهید خرید کنید" style="width: 250px"><br>
+            <input type="submit" value="اضافه کردن به سبد خرید">
+        </form>
+    </div>
+{% endblock %}

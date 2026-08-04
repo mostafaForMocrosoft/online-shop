@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block header %}
+    <title>user login</title>
+{% endblock %}
+
+{% block body %}
+    <section>
+        <form action="#" method="post">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <input type="text" name="username" placeholder="نام کاربری"><br>
+            <input type="number" name="phone" placeholder="شماره موبایل"><br>
+            <textarea name="address" placeholder="آدرس"></textarea><br>
+            <input type="password" name="password" placeholder="رمز عبور"><br>
+            <input type="submit" value="ثبت نام">
+        </form>
+    </section>
+{% endblock %}

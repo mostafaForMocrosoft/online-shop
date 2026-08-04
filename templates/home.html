@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block header %}
+    <title>Home</title>
+{% endblock %}
+
+{% block body %}
+    {% for product in products %}
+        {% if product.active != 0 %}
+            <article><a href="{{ url_for('general.detail_product', id=product.id) }}"><h3>
+                <strong>{{ product.name }}</strong></h3></a></article>
+        {% endif %}
+    {% endfor %}
+{% endblock %}

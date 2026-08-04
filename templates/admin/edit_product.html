@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block header %}
+	<title>admin edit product</title>
+{% endblock %}
+
+{% block body %}
+	<div>
+        <form action="#" method="post">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <input type="text" name="name" placeholder="نام محصول" value="{{ product.name }}"><br>
+            <textarea name="description" placeholder="توضیحات">{{ product.description }}</textarea><br>
+            <input type="number" name="price" placeholder="قیمت" value="{{ product.price }}"><br>
+            <input type="number" name="stock" placeholder="موجودی" value="{{ product.stock }}"><br>
+            <input type="checkbox" name="active" {% if product.active == 1 %} checked {% endif %}>فعال <br>
+            <input type="submit" value="ویرایش">
+        </form>
+    </div>
+{% endblock %}

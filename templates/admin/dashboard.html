@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block header %}
+    <title>admin dashboard</title>
+{% endblock %}
+
+{% block body %}
+    <a href="{{ url_for("admin.add_product") }}">صفحه محصولات</a><br>
+
+    سبد ها خرید:  <br>
+    {% for cart in carts %}
+        نام کاربر: {{ cart.user.username }}<br>
+        وضعیت سبد خرید: {{ cart.status }}<br>
+        {% for cart_item in cart.cart_items %}
+            محصول: {{ cart_item.product.id }}{{ cart_item.product.name }}<br>
+        {% endfor %}
+
+    {% endfor %}
+
+{% endblock %}

@@ -1,0 +1,12 @@
+from flask_sqlalchemy import SQLAlchemy
+from flask_wtf.csrf import CSRFProtect
+from flask_login import LoginManager
+
+db = SQLAlchemy()
+csrf = CSRFProtect()
+login_manager = LoginManager()
+login_manager.login_view = "user.login"
+login_manager.login_message = "اول وارد حسابتان شوید"
+login_manager.login_message_category = "warning"
+
+import models.user, models.product, models.cart, models.payment
