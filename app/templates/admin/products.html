@@ -9,6 +9,7 @@
                 <th>موجودی</th>
                 <th>قیمت</th>
                 <th>فعال</th>
+                <th>ویرایش</th>
             </tr>
 
             {% for product in products %}
@@ -22,6 +23,7 @@
                     {% else %}
                         <td>خیر</td>
                     {% endif %}
+                    <th><a href="{{ url_for("admin.edit_product", id=product.id) }}">ویرایش</a></th>
                 </tr>
             {% endfor %}
 

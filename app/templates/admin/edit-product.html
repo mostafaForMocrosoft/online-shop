@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block body %}
+    <section>
+    <h3>ویرایش محصول {{ product.name }}</h3>
+    </section>
+
+	<div>
+        <form action="#" method="post">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <input type="text" name="name" placeholder="نام جدید محصول" value="{{ product.name }}"><br>
+            <textarea name="description" placeholder="توضیحات جدید محصول">{{ product.description }}</textarea><br>
+            <input type="number" name="stock" placeholder="موجودی جدید محصول" value="{{ product.stock }}"><br>
+            <input type="number" name="price" placeholder="قیمت جدید محصول" value="{{ product.price }}"><br>
+            <label for="#">فعال: </label>
+            <input type="checkbox" name="active" {% if product.active == true %} checked {% endif %}><br>
+            <input type="submit" value="ویرایش">
+        </form>
+    </div>
+{% endblock %}
