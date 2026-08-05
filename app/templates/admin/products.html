@@ -10,6 +10,7 @@
                 <th>قیمت</th>
                 <th>فعال</th>
                 <th>ویرایش</th>
+                <th>حذف</th>
             </tr>
 
             {% for product in products %}
@@ -23,7 +24,8 @@
                     {% else %}
                         <td>خیر</td>
                     {% endif %}
-                    <th><a href="{{ url_for("admin.edit_product", id=product.id) }}">ویرایش</a></th>
+                    <td><a href="{{ url_for("admin.edit_product", id=product.id) }}">ویرایش</a></td>
+                    <td><a href="{{ url_for("admin.remove_product", id=product.id) }}">حذف</a></td>
                 </tr>
             {% endfor %}
 

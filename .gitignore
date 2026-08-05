@@ -1,4 +1,4 @@
 .vscode/
 venv/
-database.db3/
+database.db3
 .idea/

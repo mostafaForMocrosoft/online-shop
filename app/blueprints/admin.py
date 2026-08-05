@@ -51,7 +51,7 @@ def add_product():
             db.session.add(product)
             db.session.commit()
             flash("محصول با موفقیت اضافه شد")
-            return redirect(url_for("admin.products"))
+            return redirect(url_for("admin.add_product"))
         except Exception as ex:
             print(ex)
             return "خطا " + "<br>" + "<a href='{{url_for(\"admin.dashboard\")}}'></a>"
@@ -95,3 +95,24 @@ def edit_product(id):
             return redirect(url_for("admin.dashboard"))
 
     return render_template("admin/edit-product.html", product=product)
+
+
+@app.route("/dashboard/remove-product/<int:id>")
+def remove_product(id):
+    product = Product.query.get(int(id))
+
+    if not product:
+        flash("محصول مورد نضر پیدا نشد", "warning")
+        return redirect(url_for("admin.dashboard"))
+
+    try:
+        name = product.name
+        db.session.delete(product)
+        db.session.commit()
+
+        flash(f" محصول {name}حذف شد", "success")
+        return redirect(url_for("admin.dashboard"))
+    except Exception as ex:
+        print(ex)
+        flash("سیستم دچار مشکل شد", "warning")
+        return redirect(url_for("admin.dashboard"))
