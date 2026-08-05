@@ -1,6 +1,6 @@
 def create_app():
     from flask import Flask
-    from app.extensions import db
+    from app.extensions import db, csrf
     from app.config import database_url
     from app.blueprints.general import app as general
     from app.blueprints.admin import app as admin
@@ -17,6 +17,7 @@ def create_app():
     app.register_blueprint(admin)
 
     db.init_app(app)
+    csrf.init_app(app)
 
     with app.app_context():
         db.create_all()

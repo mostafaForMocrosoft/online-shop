@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    {% if products %}
+        <table>
+            <tr>
+                <th>نام</th>
+                <th>توضیحات</th>
+                <th>موجودی</th>
+                <th>قیمت</th>
+                <th>فعال</th>
+            </tr>
+
+            {% for product in products %}
+                <tr>
+                    <td>{{ product.name }}</td>
+                    <td>{{ product.description }}</td>
+                    <td>{{ product.stock }}</td>
+                    <td>{{ product.price }}</td>
+                    {% if product.active == true %}
+                        <td>بله</td>
+                    {% else %}
+                        <td>خیر</td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+
+        </table>
+    {% else %}
+        <b>محصولی پیدا نشد</b>
+        <br>
+    {% endif %}
+
+    <div>
+        <form action="#" method="post">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <input type="text" name="name" placeholder="نام محصول"><br>
+            <textarea name="description" placeholder="توضیحات محصول"></textarea><br>
+            <input type="number" name="stock" placeholder="تعداد محصول"><br>
+            <input type="number" name="price" placeholder="قیمت محصول"><br>
+            <label>فعال: </label>
+            <input type="checkbox" name="active"><br>
+            <input type="submit" value="ساختن">
+        </form>
+    </div>
+{% endblock %}
