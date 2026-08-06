@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    {% for cart_item in cart.cart_items %}
+        <div>
+            <div>
+                <p><span>محصول شماره {{ cart_item.product.id }}</span> <b>{{ cart_item.product.name }}</b> قیمت {{ cart_item.price }}</p>
+            </div>
+
+            <article>
+                قیمت کل: {{ cart.total_price() }}
+            </article>
+        </div>
+    {% endfor %}
+{% endblock %}

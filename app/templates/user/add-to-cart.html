@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <div>
+        <form action="#" method="post">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <input type="number" name="quantity" placeholder="تعداد که می خواهید خرید کنید"><br>
+            <input type="submit" value="افزودن یه سبد خرید">
+        </form>
+    </div>
+{% endblock %}

@@ -8,4 +8,11 @@ class Cart(db.Model):
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     user = db.relationship("User", back_populates="carts")
 
-    cart_items = db.relationship("CartItem", back_populates="cart")
+    cart_items = db.relationship("CartItem", back_populates="cart", lazy="dynamic")
+
+    def total_price(self):
+        total = 0
+        for cart_item in self.cart_items:
+            total += (cart_item.quantity * cart_item.price)
+
+        return total

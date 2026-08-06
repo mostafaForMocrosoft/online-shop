@@ -1,8 +1,11 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
-from flask_login import login_user, login_required, logout_user
+from flask_login import login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from app.extensions import db
 from app.models.user import User
+from app.models.cart import Cart
+from app.models.product import Product
+from app.models.cart_item import CartItem
 
 app = Blueprint("user", __name__)
 
@@ -62,7 +65,56 @@ def dashboard():
 
 
 @app.route("/user/logout")
+@login_required
 def logout():
     logout_user()
     flash("شما با موفقیت از حسابتان خارج شدید", "info")
     return redirect(url_for("general.home"))
+
+
+@app.route("/add-to-cart", methods = ['GET', "POST"])
+@login_required
+def add_to_cart():
+    id = request.args.get("id")
+    product = Product.query.get(int(id))
+
+    if request.method == "POST":
+        quantity_str = request.form.get("quantity")
+
+        if not quantity_str or not quantity_str.isdigit():
+            flash("تعداد وارد شده نامعتبر است", "error")
+            return redirect(url_for("general.detail_product", id=id))
+
+        quantity = int(quantity_str)
+        if quantity <= 0:
+            flash("تعداد باید بزرگتر از صفر باشد", "error")
+            return redirect(url_for("general.detail_product", id=id))
+
+        check_cart = current_user.carts.filter_by(status="pending").first()
+        if check_cart:
+            is_product_in_cart = check_cart.cart_items.filter(product_id=product.id).first()
+
+            if is_product_in_cart:
+                is_product_in_cart.quantity += int(quantity)
+                flash("محصول به سبد خریدتان اضافه شد", "success")
+                return redirect(url_for("user.carts"))
+            new_cart_item = CartItem(quantity=1, product=product, cart=check_cart, price=product.price)
+            db.session.add(new_cart_item)
+            db.session.commit()
+            flash("محصول به سبد خریدتان اضافه شد", "success")
+            return redirect(url_for("user.carts"))
+        new_cart = Cart(user=current_user)
+        cart_item = CartItem(cart=new_cart, quantity=quantity, product=product, price=product.price)
+        db.session.add(new_cart)
+        db.session.add(cart_item)
+        db.session.commit()
+        flash("محصول به سبد خریدتان اضافه شد", "success")
+        return redirect(url_for("user.carts"))
+    return render_template("user/add-to-cart.html", p=product)
+
+
+@app.route("/user/carts")
+@login_required
+def carts():
+    cart = current_user.carts.filter_by(status="pending").first()
+    return render_template("user/carts.html", cart=cart)
