@@ -9,3 +9,5 @@ class User(db.Model, UserMixin):
     address = Column(Text, unique=False, nullable=False)
     phone = Column(Integer, unique=True, nullable=False)
     password = Column(String(170), unique=False, nullable=False)
+
+    carts = db.relationship("Cart", back_populates="user")
