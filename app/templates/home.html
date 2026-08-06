@@ -2,7 +2,7 @@
 
 {% block body %}
 	{% for product in products %}
-        {{ product.name }}<br>
+        <b><a href="{{ url_for("general.detail_product", id=product.id) }}">{{ product.name }}</a></b><br>
 	{% endfor %}
 
 {% endblock %}

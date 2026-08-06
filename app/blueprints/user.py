@@ -1,7 +1,7 @@
 from flask import Blueprint
 
-app = Blueprint("user", __name__, url_prefix="/user")
+app = Blueprint("user", __name__)
 
-@app.route("/login")
+@app.route("/user/login")
 def login():
     return "LOGIN USER"
