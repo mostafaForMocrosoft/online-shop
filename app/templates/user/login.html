@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <div>
+        <section>
+            <h2><a href="{{ url_for('user.login') }}">ورود کاربران</a></h2>
+        </section>
+
+        <form action="#" method="post">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><br>
+            <input type="text" name="username" placeholder="نام کاربری"><br>
+            <input type="password" name="password" placeholder="رمز عبور"><br>
+            <input type="submit" value="ورود">
+        </form>
+    </div>
+{% endblock %}

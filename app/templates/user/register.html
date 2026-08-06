@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <div>
+        <article>
+            <h2><span><a href="{{ url_for("user.register") }}">ثبت نام کاربران</a></span></h2>
+        </article>
+
+        <section>
+            <form action="#" method="post">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <input type="text" name="username" placeholder="نام کاربری"><br>
+                <input type="number" name="phone" placeholder="شماره موبایل"><br>
+                <textarea name="address" placeholder="آدرس"></textarea><br>
+                <input type="password" name="password" placeholder="رمز عبور"><br>
+                <input type="submit" value="ثبت نام">
+            </form>
+        </section>
+    </div>
+{% endblock %}

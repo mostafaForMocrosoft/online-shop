@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 
 {% block body %}
-	{% for product in products %}
+    {% for product in products %}
         <b><a href="{{ url_for("general.detail_product", id=product.id) }}">{{ product.name }}</a></b><br>
-	{% endfor %}
+    {% endfor %}
 
 {% endblock %}

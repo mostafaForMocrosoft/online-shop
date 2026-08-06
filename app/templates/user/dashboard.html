@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <div>
+        <section><h3><span>{{ current_user.username }} سلام</span></h3></section>
+    </div>
+
+    <form>
+        <label for="#">نام کاربری: </label>
+        <input type="text" value="{{ current_user.username }}" readonly><br>
+        <label for="#">شماره موبایل: </label>
+        <input type="number" value="{{ current_user.phone }}" readonly><br>
+        <label for="#">آدرس: </label>
+        <textarea>{{ current_user.address }}</textarea>
+    </form>
+{% endblock %}

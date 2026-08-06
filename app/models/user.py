@@ -1,5 +1,5 @@
 from flask_login import UserMixin
-from app.extensions import db
+from app.extensions import db, login_manager
 from sqlalchemy import *
 
 class User(db.Model, UserMixin):
@@ -11,3 +11,8 @@ class User(db.Model, UserMixin):
     password = Column(String(170), unique=False, nullable=False)
 
     carts = db.relationship("Cart", back_populates="user")
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
