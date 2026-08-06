@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
-from flask_login import login_user, login_required
+from flask_login import login_user, login_required, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from app.extensions import db
 from app.models.user import User
@@ -59,3 +59,10 @@ def register():
 @login_required
 def dashboard():
     return render_template("user/dashboard.html")
+
+
+@app.route("/user/logout")
+def logout():
+    logout_user()
+    flash("شما با موفقیت از حسابتان خارج شدید", "info")
+    return redirect(url_for("general.home"))

@@ -13,4 +13,8 @@
         <label for="#">آدرس: </label>
         <textarea>{{ current_user.address }}</textarea>
     </form>
+
+    <div>
+        <span><a href="{{ url_for("user.logout") }}">خارج شدن از حساب کاربری</a></span>
+    </div>
 {% endblock %}
