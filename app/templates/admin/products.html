@@ -4,6 +4,7 @@
     {% if products %}
         <table style="border: 1px solid black;">
             <tr>
+                <th>عکس</th>
                 <th>نام</th>
                 <th>توضیحات</th>
                 <th>موجودی</th>
@@ -15,6 +16,7 @@
 
             {% for product in products %}
                 <tr>
+                    <td><img src="/static/uploads/{{ product.id }}.jpg" alt="..." style="width: 50px"></td>
                     <td>{{ product.name }}</td>
                     <td>{{ product.description }}</td>
                     <td>{{ product.stock }}</td>
@@ -36,8 +38,10 @@
     {% endif %}
 
     <div>
-        <form action="#" method="post">
+        <form action="#" method="post" enctype="multipart/form-data">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <label for="#">پس زمینه: </label>
+            <input type="file" name="file"><br>
             <input type="text" name="name" placeholder="نام محصول"><br>
             <textarea name="description" placeholder="توضیحات محصول"></textarea><br>
             <input type="number" name="stock" placeholder="تعداد محصول"><br>

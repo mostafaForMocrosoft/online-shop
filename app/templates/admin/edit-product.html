@@ -6,8 +6,13 @@
     </section>
 
 	<div>
-        <form action="#" method="post">
+        <form action="#" method="post" enctype="multipart/form-data">
+            <section>
+                <img src="/static/uploads/{{ product.id }}.jpg" alt="..." style="width: 250px;">
+            </section>
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <label for="#">پس زمینه: </label>
+            <input type="file" name="img"><br>
             <input type="text" name="name" placeholder="نام جدید محصول" value="{{ product.name }}"><br>
             <textarea name="description" placeholder="توضیحات جدید محصول">{{ product.description }}</textarea><br>
             <input type="number" name="stock" placeholder="موجودی جدید محصول" value="{{ product.stock }}"><br>

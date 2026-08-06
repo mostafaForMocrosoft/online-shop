@@ -1,5 +1,7 @@
+import os
+from os import path
 from flask import Blueprint, abort, flash, redirect, render_template, request, session, url_for
-from app.config import admin_password, admin_username
+from app.config import admin_password, admin_username, UPLOAD_FOLDER
 from app.models.product import Product
 from app.extensions import db
 
@@ -35,6 +37,7 @@ def dashboard():
 @app.route("/dashboard/products", methods=["GET", "POST"])
 def add_product():
     if request.method == "POST":
+        file = request.files.get("file")
         name = request.form.get("name")
         description = request.form.get("description")
         stock = int(request.form.get("stock"))
@@ -50,7 +53,10 @@ def add_product():
             product = Product(name=name, description=description, stock=stock, price=price, active=active)
             db.session.add(product)
             db.session.commit()
-            flash("محصول با موفقیت اضافه شد")
+
+            file.save(path.join(UPLOAD_FOLDER, f"{product.id}.jpg"))
+
+            flash("محصول با موفقیت اضافه شد","success")
             return redirect(url_for("admin.add_product"))
         except Exception as ex:
             print(ex)
@@ -68,6 +74,7 @@ def edit_product(id):
         return redirect(url_for("admin.dashboard"))
 
     if request.method == "POST":
+        file = request.files.get("img", None)
         name = request.form.get("name")
         description = request.form.get("description")
         stock = int(request.form.get("stock"))
@@ -85,6 +92,10 @@ def edit_product(id):
             product.stock = stock
             product.price = price
             product.active = active
+
+            if file:
+                os.remove(path.join(UPLOAD_FOLDER, f"{product.id}.jpg"))
+                file.save(path.join(UPLOAD_FOLDER, f"{product.id}.jpg"))
 
             db.session.commit()
             flash("محصول مورد نظر ویرایش شد", "info")
@@ -106,11 +117,12 @@ def remove_product(id):
         return redirect(url_for("admin.dashboard"))
 
     try:
-        name = product.name
         db.session.delete(product)
         db.session.commit()
 
-        flash(f" محصول {name}حذف شد", "success")
+        os.remove(path.join(UPLOAD_FOLDER, f"{id}.jpg"))
+
+        flash(f" محصول مورد نظر حذف شد ", "success")
         return redirect(url_for("admin.dashboard"))
     except Exception as ex:
         print(ex)
