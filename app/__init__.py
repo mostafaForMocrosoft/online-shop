@@ -5,6 +5,7 @@ def create_app():
     from app.blueprints.general import app as general
     from app.blueprints.admin import app as admin
     from app.blueprints.user import app as user
+    from app.blueprints.payment import app as pay_bp
     from app.config import SECRET_KEY
 
     app = Flask(__name__)
@@ -15,6 +16,7 @@ def create_app():
     app.register_blueprint(general)
     app.register_blueprint(user)
     app.register_blueprint(admin)
+    app.register_blueprint(pay_bp)
 
     db.init_app(app)
     csrf.init_app(app)
