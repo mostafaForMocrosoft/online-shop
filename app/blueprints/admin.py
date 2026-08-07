@@ -25,7 +25,7 @@ def login():
             return redirect(url_for("admin.dashboard"))
         else:
             flash("نام کاربری یا رمز ورود اشتباه است", "warning")
-            return redirect(url_for("general.home"))
+            return redirect(url_for("admin.login"))
     return render_template("admin/login.html")
 
 

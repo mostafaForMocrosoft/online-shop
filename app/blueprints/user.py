@@ -1,3 +1,4 @@
+import requests
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -6,6 +7,7 @@ from app.models.user import User
 from app.models.cart import Cart
 from app.models.product import Product
 from app.models.cart_item import CartItem
+from app.models.payment import Payment
 
 app = Blueprint("user", __name__)
 
@@ -92,10 +94,12 @@ def add_to_cart():
 
         check_cart = current_user.carts.filter_by(status="pending").first()
         if check_cart:
-            is_product_in_cart = check_cart.cart_items.filter(product_id=product.id).first()
+            is_product_in_cart = check_cart.cart_items.filter(CartItem.product_id == product.id).first()
 
             if is_product_in_cart:
                 is_product_in_cart.quantity += int(quantity)
+                product.stock -= int(quantity)
+                db.session.commit()
                 flash("محصول به سبد خریدتان اضافه شد", "success")
                 return redirect(url_for("user.carts"))
             new_cart_item = CartItem(quantity=1, product=product, cart=check_cart, price=product.price)
@@ -118,3 +122,30 @@ def add_to_cart():
 def carts():
     cart = current_user.carts.filter_by(status="pending").first()
     return render_template("user/carts.html", cart=cart)
+
+
+@app.route("/payment/<int:id>")
+@login_required
+def payment(id):
+    cart = current_user.carts.filter_by(id=id, status="pending").first()
+    try:
+        r = requests.post("https://sandbox.shepa.com/api/v1/token", data={"api":"sandbox", "callback":"http://localhost:5000/verify", "amount":cart.total_price() * 10})
+    except ConnectionError:
+        flash("اینترنت شما قطع شد", "error")
+        return redirect(url_for("user.carts"))
+    else:
+        if r.status_code != 200:
+            print("اتصال به درگاه پرداخت نا موفق بود با status code {}".format(r.status_code))
+            flash("خطا در اتصال به درگاه پرداخت", "error")
+            return redirect(url_for("user.carts"))
+
+        data = r.json()
+
+        token = data['result']['token']
+        url = data['result']["url"]
+
+        new_payment = Payment(user=current_user, amount=cart.total_price() * 10, token=token)
+        db.session.add(new_payment)
+        db.session.commit()
+
+        return redirect(url)

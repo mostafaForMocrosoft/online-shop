@@ -11,6 +11,7 @@ class User(db.Model, UserMixin):
     password = Column(String(170), unique=False, nullable=False)
 
     carts = db.relationship("Cart", back_populates="user", lazy="dynamic")
+    payments = db.relationship("Payment", back_populates="user")
 
 
 @login_manager.user_loader

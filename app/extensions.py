@@ -13,3 +13,4 @@ import app.models.user
 import app.models.product
 import app.models.cart
 import app.models.cart_item
+import app.models.payment
